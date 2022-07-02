@@ -116,7 +116,7 @@ class CounterButton extends Component {
 
 class ResetButton extends Component {
   constructor() {
-    super();
+    super();    
   }
   render = () => {
     return (
