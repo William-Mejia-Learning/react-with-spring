@@ -4,11 +4,13 @@ import {
   Route,
   Routes,
   useParams,
+  params,
   Link,
 } from "react-router-dom";
 import withNavigation from "./withNavigation";
 import AuthenticationService from "./AuthenticationService.js";
 import AuthenticatedRoute from "./AuthenticateRoute";
+import HelloWorldService from "../../api/todo/HelloWorldService";
 
 class TodoApp extends Component {
   render() {
@@ -25,15 +27,30 @@ class TodoApp extends Component {
           <Routes>
             <Route path="/" element={<LoginComponentWithNavigation />} />
             <Route path="/login" element={<LoginComponentWithNavigation />} />
-            <Route path="/welcome/:name" element={
-              <AuthenticatedRoute>
-                <WelcomeComponent />
-              </AuthenticatedRoute>
-            } />
-            <Route path="/todos" element={              <AuthenticatedRoute>
-                <ListTodosComponent />
-              </AuthenticatedRoute>} />
-            <Route path="/logout" element={<AuthenticatedRoute><LogoutComponent /></AuthenticatedRoute>} />
+            <Route
+              path="/welcome/:name"
+              element={
+                <AuthenticatedRoute>
+                  <WelcomeComponent />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/todos"
+              element={
+                <AuthenticatedRoute>
+                  <ListTodosComponent />
+                </AuthenticatedRoute>
+              }
+            />
+            <Route
+              path="/logout"
+              element={
+                <AuthenticatedRoute>
+                  <LogoutComponent />
+                </AuthenticatedRoute>
+              }
+            />
             <Route path="*" element={<ErrorComponent />} />
           </Routes>
           <FooterComponent />
@@ -172,16 +189,50 @@ class ListTodosComponent extends Component {
   }
 }
 
-function WelcomeComponent(props) {
-  let { name: username } = useParams();
-  return (
-    <div>
-      <p>
-        Welcome {username}. You can manage your todos{" "}
-        <Link to="/todos">here</Link>
-      </p>
-    </div>
-  );
+class WelcomeComponent extends Component {
+  constructor(props) {
+    super(props)
+    this.retrieveWelcomeMessage = this.retrieveWelcomeMessage.bind(this);
+    this.state = {
+      welcomeMessage : ''
+    }
+    this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this);
+  }
+  render() {
+    // let { name: username } = useParams();
+    return (
+      <div>
+        <div className="container">
+          Welcome. You can manage your todos{" "}
+          <Link to="/todos">here</Link>
+        </div>
+        <div className="container">
+          Welcome. You can manage your todos{" "}
+          <Link to="/todos">here</Link>
+          <button onClick={this.retrieveWelcomeMessage} className="btn btn-success">
+            Get Welcome Message
+          </button>
+        </div>
+        <div className="container">
+          {this.state.welcomeMessage}
+        </div>
+      </div>
+    );
+  }
+  retrieveWelcomeMessage(){
+    // HelloWorldService.executeHelloWorldService().then(response => this.handleSuccessfulResponse(response))
+
+    HelloWorldService.executeHelloWorldBean().then(response => this.handleSuccessfulResponse(response))
+
+    // HelloWorldService.executeHelloWorldPathVariable().then(response => this.handleSuccessfulResponse(response))
+  }
+
+  handleSuccessfulResponse(response){
+    this.setState({
+    welcomeMessage: response.data.message
+    })
+
+  }
 }
 
 function ErrorComponent() {
