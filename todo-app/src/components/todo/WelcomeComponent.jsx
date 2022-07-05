@@ -15,6 +15,7 @@ class WelcomeComponent extends Component {
         welcomeMessage : ''
       }
       this.handleSuccessfulResponse = this.handleSuccessfulResponse.bind(this);
+      
     }
     render() {
       // let { name: username } = useParams();

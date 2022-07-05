@@ -3,13 +3,9 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  useParams,
-  params,
-  Link,
 } from "react-router-dom";
 import withNavigation from "./withNavigation";
 import AuthenticatedRoute from "./AuthenticateRoute";
-import HelloWorldService from "../../api/todo/HelloWorldService";
 import WelcomeComponent from "./WelcomeComponent";
 import LoginComponent from "./LoginComponent";
 import ListTodosComponent from "./ListTodosComponent";
@@ -61,9 +57,6 @@ class TodoApp extends Component {
           </Routes>
           <FooterComponent />
         </Router>
-
-        {/* <LoginComponent />
-        <WelcomeComponent /> */}
       </div>
     );
   }
